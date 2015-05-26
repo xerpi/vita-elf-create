@@ -115,11 +115,11 @@ typedef struct {
 #define ELFDATA2LSB     1   /* 2's complement, little endian */
 #define ELFDATA2MSB     2   /* 2's complement, big endian */
 #define ELFDATANUM      3
-
 #define EI_VERSION	6   /* File version byte index */
                             /* Value must be EV_CURRENT */
-
-#define EI_PAD		7   /* Byte index of padding bytes */
+#define	EI_OSABI	7   /* Operating system/ABI identification */
+#define	EI_ABIVERSION	8   /* ABI version */
+#define EI_PAD		9   /* Byte index of padding bytes */
 
 /* Legal values for e_type (object file type).  */
 
@@ -413,6 +413,15 @@ typedef struct {
 #include <stdio.h>
 
 int elf_read_ehdr(FILE *fp, Elf32_Ehdr *ehdr);
+
+// Precondition: ehdr is valid!
+void elf_print_ehdr(const Elf32_Ehdr *ehdr);
+int elf_load_phdr(FILE *fp, const Elf32_Ehdr *ehdr, Elf32_Phdr **phdr);
+int elf_load_shdr(FILE *fp, const Elf32_Ehdr *ehdr, Elf32_Shdr **shdr);
+void elf_free_phdr(Elf32_Phdr **phdr);
+void elf_free_shdr(Elf32_Shdr **shdr);
+
+char *elf_load_shstrtab(FILE *fp, const Elf32_Ehdr *ehdr, const Elf32_Shdr *shdr);
 
 
 #endif	/* elf.h */
