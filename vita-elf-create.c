@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "elf.h"
+
+#define FSTUBS_SECTION ".vitalink.fstubs"
+#define VSTUBS_SECTION ".vitalink.vstubs"
 
 void usage();
 
@@ -34,12 +38,39 @@ int main(int argc, char *argv[])
 	}
 
 
-	// Print sections
 	// Load entire String Table Section
 	char *shstrtab = elf_load_shstrtab(fp, &ehdr, shdr);
+	int fstubs_found = 0;
+	int vstubs_found = 0;
 	int i;
 	for (i = 0; i < ehdr.e_shnum; i++) {
-		printf("Section %i: %s\n", i, (shstrtab + shdr[i].sh_name));
+		const char *shstr = shstrtab + shdr[i].sh_name;
+		if (!fstubs_found) {
+			if (strcmp(FSTUBS_SECTION, shstr) == 0) {
+				fstubs_found = 1;
+			}
+		}
+		if (!vstubs_found) {
+			if (strcmp(VSTUBS_SECTION, shstr) == 0) {
+				vstubs_found = 1;
+			}
+		}
+	}
+
+	if (!fstubs_found && !vstubs_found) {
+		fprintf(stderr, "ERROR: the requiered sections "
+			FSTUBS_SECTION " and " VSTUBS_SECTION
+			" were not found.\n");
+		goto exit_free_shstrtab;
+	}
+
+	if (!fstubs_found) {
+		printf("WARNING: section: " FSTUBS_SECTION
+			" was not found");
+	}
+	if (!vstubs_found) {
+		printf("WARNING: section: " VSTUBS_SECTION
+			" was not found");
 	}
 
 
@@ -50,6 +81,8 @@ int main(int argc, char *argv[])
 	fclose(fp);
 	return EXIT_SUCCESS;
 
+exit_free_shstrtab:
+	free(shstrtab);
 exit_free_shdr:
 	elf_free_shdr(&shdr);
 exit_free_phdr:

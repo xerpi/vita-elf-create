@@ -137,7 +137,7 @@ typedef struct {
 #define ET_SCE_DYNAMIC          0xFE18      /* Unused */
 #define ET_SCE_PSPRELEXEC       0xFFA0      /* Unused (PSP ELF only) */
 #define ET_SCE_PPURELEXEC       0xFFA4      /* Unused (SPU ELF only) */
-#define ET_SCE_UNK	        0xFFA5      /* Unknown */
+#define ET_SCE_UNK              0xFFA5      /* Unknown */
 #define ET_LOPROC               0xFF00      /* Processor-specific range start */
 #define ET_HIPROC               0xFFFF
 /* Processor-specific range end */

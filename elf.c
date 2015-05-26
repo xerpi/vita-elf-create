@@ -83,7 +83,7 @@ int elf_load_phdr(FILE *fp, const Elf32_Ehdr *ehdr, Elf32_Phdr **phdr)
 	size_t n = fread(*phdr, 1, total, fp);
 
 	if (n != total) {
-		fprintf(stderr, "Could not read Section Headers\n");
+		fprintf(stderr, "Could not read Program Headers\n");
 		free(*phdr);
 		return 0;
 	}
@@ -133,7 +133,6 @@ char *elf_load_shstrtab(FILE *fp, const Elf32_Ehdr *ehdr, const Elf32_Shdr *shdr
 
 	// Load entire String Table Section
 	char *shstrtab = malloc(shstrtab_shdr->sh_size * sizeof(char));
-
 
 	fseek(fp, shstrtab_shdr->sh_offset, SEEK_SET);
 	fread(shstrtab, 1, shstrtab_shdr->sh_size * sizeof(char), fp);
