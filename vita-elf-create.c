@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "elf.h"
-#include "imports.h"
+#include "vita_module.h"
 
 #define FSTUBS_SECTION ".vitalink.fstubs"
 #define VSTUBS_SECTION ".vitalink.vstubs"

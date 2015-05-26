@@ -1,5 +1,5 @@
 TARGET = vita-elf-create
-OBJS = vita-elf-create.o elf.o imports.o
+OBJS = vita-elf-create.o elf.o vita_module.o
 
 CFLAGS = -Wall -O2 -Wno-unused-label
 LIBS =
